@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 enum ToastType { success, error, warning, info }
 enum ToastPosition { top, center, bottom }
 
-<<<<<<< Updated upstream
-=======
 OverlayEntry? _currentToast;
 
->>>>>>> Stashed changes
 void showAnimatedToast({
   required BuildContext context,
   required String message,
@@ -19,11 +16,8 @@ void showAnimatedToast({
   double borderRadius = 12.0,
   Duration duration = const Duration(seconds: 3),
 }) {
-<<<<<<< Updated upstream
-=======
   _currentToast?.remove();
 
->>>>>>> Stashed changes
   final overlay = Overlay.of(context);
   final overlayEntry = OverlayEntry(
     builder: (context) => _AnimatedToast(
@@ -38,10 +32,14 @@ void showAnimatedToast({
     ),
   );
 
+  _currentToast = overlayEntry;
   overlay.insert(overlayEntry);
 
   Future.delayed(duration + const Duration(milliseconds: 300), () {
-    overlayEntry.remove();
+    if (_currentToast == overlayEntry) {
+      _currentToast?.remove();
+      _currentToast = null;
+    }
   });
 }
 
