@@ -1,37 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 enum ToastType { success, error, warning, info }
+enum ToastPosition { top, center, bottom }
 
 void showAnimatedToast({
   required BuildContext context,
   required String message,
   required ToastType type,
-<<<<<<< Updated upstream
-  Duration duration = const Duration(seconds: 3),
-}) {
-  final color = {
-    ToastType.success: Colors.green,
-    ToastType.error: Colors.red,
-    ToastType.warning: Colors.orange,
-    ToastType.info: Colors.blue,
-  }[type]!;
-
-  final icon = {
-    ToastType.success: Icons.check_circle,
-    ToastType.error: Icons.error,
-    ToastType.warning: Icons.warning,
-    ToastType.info: Icons.info,
-  }[type]!;
-
-  final toast = SnackBar(
-    content: Row(
-      children: [
-        Icon(icon, color: Colors.white),
-        const SizedBox(width: 10),
-        Expanded(child: Text(message)),
-      ],
-=======
   ToastPosition position = ToastPosition.bottom,
   Color? backgroundColor,
   Color? textColor,
@@ -50,16 +25,9 @@ void showAnimatedToast({
       customIcon: customIcon,
       borderRadius: borderRadius,
       duration: duration,
->>>>>>> Stashed changes
     ),
-    backgroundColor: color,
-    behavior: SnackBarBehavior.floating,
-    duration: duration,
   );
 
-<<<<<<< Updated upstream
-  ScaffoldMessenger.of(context).showSnackBar(toast);
-=======
   overlay.insert(overlayEntry);
 
   Future.delayed(duration + const Duration(milliseconds: 300), () {
@@ -221,5 +189,4 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
       ),
     );
   }
->>>>>>> Stashed changes
 }
