@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'common/toast/animated_toast.dart';
 
@@ -11,6 +10,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Animated Toast Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: const ToastDemoPage(),
       debugShowCheckedModeBanner: false,
     );
@@ -20,11 +22,46 @@ class MyApp extends StatelessWidget {
 class ToastDemoPage extends StatelessWidget {
   const ToastDemoPage({super.key});
 
-  void _showToast(BuildContext context, ToastType type) {
+  void _showDefaultToast(BuildContext context) {
     showAnimatedToast(
       context: context,
-      message: "This is a ${type.name} message!",
-      type: type,
+      message: "This is a SUCCESS message!",
+      type: ToastType.success,
+    );
+  }
+
+  void _showTopToast(BuildContext context) {
+    showAnimatedToast(
+      context: context,
+      message: "This is a WARNING message at TOP!",
+      type: ToastType.warning,
+      position: ToastPosition.top,
+    );
+  }
+
+  void _showCenterCustomToast(BuildContext context) {
+    showAnimatedToast(
+      context: context,
+      message: "This is a CUSTOM styled CENTER toast!",
+      type: ToastType.info,
+      position: ToastPosition.center,
+      backgroundColor: Colors.deepPurple,
+      textColor: Colors.yellowAccent,
+      customIcon: Icons.star,
+      borderRadius: 20,
+    );
+  }
+
+  void _showBottomErrorToast(BuildContext context) {
+    showAnimatedToast(
+      context: context,
+      message: "This is an ERROR toast at BOTTOM!",
+      type: ToastType.error,
+      position: ToastPosition.bottom,
+      backgroundColor: Colors.black,
+      textColor: Colors.redAccent,
+      customIcon: Icons.warning,
+      borderRadius: 30,
     );
   }
 
@@ -35,12 +72,25 @@ class ToastDemoPage extends StatelessWidget {
       body: Center(
         child: Wrap(
           spacing: 10,
-          children: ToastType.values.map((type) {
-            return ElevatedButton(
-              onPressed: () => _showToast(context, type),
-              child: Text(type.name.toUpperCase()),
-            );
-          }).toList(),
+          runSpacing: 10,
+          children: [
+            ElevatedButton(
+              onPressed: () => _showDefaultToast(context),
+              child: const Text('DEFAULT SUCCESS'),
+            ),
+            ElevatedButton(
+              onPressed: () => _showTopToast(context),
+              child: const Text('TOP WARNING'),
+            ),
+            ElevatedButton(
+              onPressed: () => _showCenterCustomToast(context),
+              child: const Text('CENTER CUSTOM'),
+            ),
+            ElevatedButton(
+              onPressed: () => _showBottomErrorToast(context),
+              child: const Text('BOTTOM ERROR'),
+            ),
+          ],
         ),
       ),
     );
