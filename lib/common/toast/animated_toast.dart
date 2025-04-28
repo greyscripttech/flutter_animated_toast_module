@@ -8,6 +8,10 @@ void showAnimatedToast({
   required String message,
   required ToastType type,
   ToastPosition position = ToastPosition.bottom,
+  Color? backgroundColor,
+  Color? textColor,
+  IconData? customIcon,
+  double borderRadius = 12.0,
   Duration duration = const Duration(seconds: 3),
 }) {
   final overlay = Overlay.of(context);
@@ -16,6 +20,10 @@ void showAnimatedToast({
       message: message,
       type: type,
       position: position,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      customIcon: customIcon,
+      borderRadius: borderRadius,
       duration: duration,
     ),
   );
@@ -31,6 +39,10 @@ class _AnimatedToast extends StatefulWidget {
   final String message;
   final ToastType type;
   final ToastPosition position;
+  final Color? backgroundColor;
+  final Color? textColor;
+  final IconData? customIcon;
+  final double borderRadius;
   final Duration duration;
 
   const _AnimatedToast({
@@ -38,6 +50,10 @@ class _AnimatedToast extends StatefulWidget {
     required this.message,
     required this.type,
     required this.position,
+    this.backgroundColor,
+    this.textColor,
+    this.customIcon,
+    this.borderRadius = 12.0,
     required this.duration,
   }) : super(key: key);
 
@@ -86,7 +102,7 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
     super.dispose();
   }
 
-  Color _backgroundColor() {
+  Color _defaultBackgroundColor() {
     switch (widget.type) {
       case ToastType.success:
         return Colors.green;
@@ -99,7 +115,7 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
     }
   }
 
-  IconData _iconData() {
+  IconData _defaultIcon() {
     switch (widget.type) {
       case ToastType.success:
         return Icons.check_circle;
@@ -141,8 +157,8 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: _backgroundColor(),
-                borderRadius: BorderRadius.circular(12),
+                color: widget.backgroundColor ?? _defaultBackgroundColor(),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
@@ -154,12 +170,15 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(_iconData(), color: Colors.white),
+                  Icon(
+                    widget.customIcon ?? _defaultIcon(),
+                    color: widget.textColor ?? Colors.white,
+                  ),
                   const SizedBox(width: 10),
                   Flexible(
                     child: Text(
                       widget.message,
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: widget.textColor ?? Colors.white),
                     ),
                   ),
                 ],
