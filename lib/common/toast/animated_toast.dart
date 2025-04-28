@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 enum ToastType { success, error, warning, info }
 enum ToastPosition { top, center, bottom }
 
+<<<<<<< Updated upstream
+=======
+OverlayEntry? _currentToast;
+
+>>>>>>> Stashed changes
 void showAnimatedToast({
   required BuildContext context,
   required String message,
@@ -14,6 +19,11 @@ void showAnimatedToast({
   double borderRadius = 12.0,
   Duration duration = const Duration(seconds: 3),
 }) {
+<<<<<<< Updated upstream
+=======
+  _currentToast?.remove();
+
+>>>>>>> Stashed changes
   final overlay = Overlay.of(context);
   final overlayEntry = OverlayEntry(
     builder: (context) => _AnimatedToast(
@@ -102,16 +112,17 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
     super.dispose();
   }
 
-  Color _defaultBackgroundColor() {
+  Color _defaultBackgroundColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     switch (widget.type) {
       case ToastType.success:
-        return Colors.green;
+        return isDark ? Colors.greenAccent.shade700 : Colors.green;
       case ToastType.error:
-        return Colors.red;
+        return isDark ? Colors.redAccent.shade700 : Colors.red;
       case ToastType.warning:
-        return Colors.orange;
+        return isDark ? Colors.orangeAccent.shade700 : Colors.orange;
       case ToastType.info:
-        return Colors.blue;
+        return isDark ? Colors.lightBlueAccent.shade700 : Colors.blue;
     }
   }
 
@@ -157,7 +168,7 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: widget.backgroundColor ?? _defaultBackgroundColor(),
+                color: widget.backgroundColor ?? _defaultBackgroundColor(context),
                 borderRadius: BorderRadius.circular(widget.borderRadius),
                 boxShadow: [
                   BoxShadow(
