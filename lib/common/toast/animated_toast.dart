@@ -1,37 +1,15 @@
-
 import 'package:flutter/material.dart';
 
 enum ToastType { success, error, warning, info }
+enum ToastPosition { top, center, bottom }
+
+// Global tracker for active toast
+OverlayEntry? _currentToast;
 
 void showAnimatedToast({
   required BuildContext context,
   required String message,
   required ToastType type,
-<<<<<<< Updated upstream
-  Duration duration = const Duration(seconds: 3),
-}) {
-  final color = {
-    ToastType.success: Colors.green,
-    ToastType.error: Colors.red,
-    ToastType.warning: Colors.orange,
-    ToastType.info: Colors.blue,
-  }[type]!;
-
-  final icon = {
-    ToastType.success: Icons.check_circle,
-    ToastType.error: Icons.error,
-    ToastType.warning: Icons.warning,
-    ToastType.info: Icons.info,
-  }[type]!;
-
-  final toast = SnackBar(
-    content: Row(
-      children: [
-        Icon(icon, color: Colors.white),
-        const SizedBox(width: 10),
-        Expanded(child: Text(message)),
-      ],
-=======
   ToastPosition position = ToastPosition.bottom,
   Color? backgroundColor,
   Color? textColor,
@@ -39,6 +17,9 @@ void showAnimatedToast({
   double borderRadius = 12.0,
   Duration duration = const Duration(seconds: 3),
 }) {
+  // Remove existing toast if any
+  _currentToast?.remove();
+
   final overlay = Overlay.of(context);
   final overlayEntry = OverlayEntry(
     builder: (context) => _AnimatedToast(
@@ -50,20 +31,17 @@ void showAnimatedToast({
       customIcon: customIcon,
       borderRadius: borderRadius,
       duration: duration,
->>>>>>> Stashed changes
     ),
-    backgroundColor: color,
-    behavior: SnackBarBehavior.floating,
-    duration: duration,
   );
 
-<<<<<<< Updated upstream
-  ScaffoldMessenger.of(context).showSnackBar(toast);
-=======
+  _currentToast = overlayEntry;
   overlay.insert(overlayEntry);
 
   Future.delayed(duration + const Duration(milliseconds: 300), () {
-    overlayEntry.remove();
+    if (_currentToast == overlayEntry) {
+      _currentToast?.remove();
+      _currentToast = null;
+    }
   });
 }
 
@@ -221,5 +199,4 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
       ),
     );
   }
->>>>>>> Stashed changes
 }
