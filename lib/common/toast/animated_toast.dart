@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 enum ToastType { success, error, warning, info }
 enum ToastPosition { top, center, bottom }
 
-// Global tracker for active toast
 OverlayEntry? _currentToast;
 
 void showAnimatedToast({
@@ -17,7 +16,6 @@ void showAnimatedToast({
   double borderRadius = 12.0,
   Duration duration = const Duration(seconds: 3),
 }) {
-  // Remove existing toast if any
   _currentToast?.remove();
 
   final overlay = Overlay.of(context);
@@ -112,16 +110,17 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
     super.dispose();
   }
 
-  Color _defaultBackgroundColor() {
+  Color _defaultBackgroundColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     switch (widget.type) {
       case ToastType.success:
-        return Colors.green;
+        return isDark ? Colors.greenAccent.shade700 : Colors.green;
       case ToastType.error:
-        return Colors.red;
+        return isDark ? Colors.redAccent.shade700 : Colors.red;
       case ToastType.warning:
-        return Colors.orange;
+        return isDark ? Colors.orangeAccent.shade700 : Colors.orange;
       case ToastType.info:
-        return Colors.blue;
+        return isDark ? Colors.lightBlueAccent.shade700 : Colors.blue;
     }
   }
 
@@ -167,7 +166,7 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: widget.backgroundColor ?? _defaultBackgroundColor(),
+                color: widget.backgroundColor ?? _defaultBackgroundColor(context),
                 borderRadius: BorderRadius.circular(widget.borderRadius),
                 boxShadow: [
                   BoxShadow(
