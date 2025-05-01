@@ -30,7 +30,7 @@ class ToastDemoPage extends StatelessWidget {
     );
   }
 
-  void _showTopToast(BuildContext context) {
+  void _showTopWarningToast(BuildContext context) {
     showAnimatedToast(
       context: context,
       message: "This is a WARNING message at TOP!",
@@ -52,16 +52,17 @@ class ToastDemoPage extends StatelessWidget {
     );
   }
 
-  void _showBottomErrorToast(BuildContext context) {
+  void _showErrorWithActionToast(BuildContext context) {
     showAnimatedToast(
       context: context,
-      message: "This is an ERROR toast at BOTTOM!",
+      message: "Item deleted",
       type: ToastType.error,
-      position: ToastPosition.bottom,
-      backgroundColor: Colors.black,
-      textColor: Colors.redAccent,
-      customIcon: Icons.warning,
-      borderRadius: 30,
+      actionText: "UNDO",
+      onActionTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Undo tapped!")),
+        );
+      },
     );
   }
 
@@ -79,7 +80,7 @@ class ToastDemoPage extends StatelessWidget {
               child: const Text('DEFAULT SUCCESS'),
             ),
             ElevatedButton(
-              onPressed: () => _showTopToast(context),
+              onPressed: () => _showTopWarningToast(context),
               child: const Text('TOP WARNING'),
             ),
             ElevatedButton(
@@ -87,8 +88,8 @@ class ToastDemoPage extends StatelessWidget {
               child: const Text('CENTER CUSTOM'),
             ),
             ElevatedButton(
-              onPressed: () => _showBottomErrorToast(context),
-              child: const Text('BOTTOM ERROR'),
+              onPressed: () => _showErrorWithActionToast(context),
+              child: const Text('ERROR WITH ACTION'),
             ),
           ],
         ),

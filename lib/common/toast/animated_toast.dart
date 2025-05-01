@@ -14,6 +14,8 @@ void showAnimatedToast({
   Color? textColor,
   IconData? customIcon,
   double borderRadius = 12.0,
+  String? actionText,
+  VoidCallback? onActionTap,
   Duration duration = const Duration(seconds: 3),
 }) {
   _currentToast?.remove();
@@ -28,6 +30,8 @@ void showAnimatedToast({
       textColor: textColor,
       customIcon: customIcon,
       borderRadius: borderRadius,
+      actionText: actionText,
+      onActionTap: onActionTap,
       duration: duration,
     ),
   );
@@ -51,6 +55,8 @@ class _AnimatedToast extends StatefulWidget {
   final Color? textColor;
   final IconData? customIcon;
   final double borderRadius;
+  final String? actionText;
+  final VoidCallback? onActionTap;
   final Duration duration;
 
   const _AnimatedToast({
@@ -62,6 +68,8 @@ class _AnimatedToast extends StatefulWidget {
     this.textColor,
     this.customIcon,
     this.borderRadius = 12.0,
+    this.actionText,
+    this.onActionTap,
     required this.duration,
   }) : super(key: key);
 
@@ -190,6 +198,17 @@ class _AnimatedToastState extends State<_AnimatedToast> with SingleTickerProvide
                       style: TextStyle(color: widget.textColor ?? Colors.white),
                     ),
                   ),
+                  if (widget.actionText != null && widget.onActionTap != null)
+                    TextButton(
+                      onPressed: widget.onActionTap,
+                      child: Text(
+                        widget.actionText!,
+                        style: TextStyle(
+                          color: widget.textColor ?? Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
